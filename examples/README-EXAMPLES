@@ -1,0 +1,27 @@
+1. This directory contains the following files:
+
+      API_Reference.dokuwiki     - Sample DokuWiki output
+      API_Reference.html         - Sample HTML     output
+      API_Reference.pdf          - Sample PDF      output
+      API_Reference.xml          - Sample XML      input
+
+      Makefile                   - "Makefile" used to generate output
+      README-EXAMPLES            - This documentation file
+      build-xsltdoc-examples.sh  - Script called by "Makefile"
+      build-xsltdoc-pdf.sh       - Script called by "Makefile"
+
+2. To rebuild the sample DokuWiki and HTML output, execute:
+
+      make
+
+For this mode, you'll need "xsltproc".
+
+3. To rebuild the sample PDF output, execute:
+
+      make pdf
+
+For this mode, you'll need "xsltproc" and "wkhtmltopdf".
+
+4. To delete generated files, execute:
+
+      make clean

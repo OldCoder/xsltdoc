@@ -1,0 +1,2343 @@
+<html>
+<head>
+<title>API documentation</title>
+<style type="text/css"><!--
+body {
+    background-color:   white;
+    font-size:          1.2em;
+    margin-left:        60px;
+    margin-right:       60px;
+    margin-top:         20px;
+    margin-bottom:      20px;
+}
+.label {
+    font-weight:        bold;
+}
+.note {
+    font-style:         italic;
+}
+div.code {
+    font-family:        Inconsolata,courier,fixed;
+    font-size:          0.9em;
+    white-space:        pre;
+    background-color:   #c0c0c0;
+}
+div.cproto {
+    font-family:        Inconsolata,courier,fixed;
+    font-size:          0.9em;
+    white-space:        pre;
+    background-color:   #c0c0c0;
+}
+div.function {
+}
+div.proto {
+    font-family:        Inconsolata,courier,fixed;
+    font-size:          0.9em;
+    white-space:        pre;
+    background-color:   #c0c0c0;
+}
+div.secttitle {
+    color:              #008800;
+    font-weight:        bold;
+    font-size:          1.5em;
+    text-align:         center;
+}
+div.text {
+    text-align:         justify;
+}
+div.xterm {
+    font-family:        Inconsolata,courier,fixed;
+    font-size:          0.9em;
+    white-space:        pre;
+    background-color:   #c0c0c0;
+}
+--></style>
+</head>
+<body>
+<p/><hr/><p/>
+<div class="section">
+<div class="secttitle">
+<p>C API Reference</p>
+</div>
+
+<div class="text">
+<p>Welcome to the quick reference guide for the Brick Engine, v5.2.
+This document covers the C API.</p></div>
+
+<p/><hr/><p/>
+<div class="section">
+<div class="secttitle">
+<p>Basic Engine Operation</p>
+</div>
+
+<p/><hr/><p/>
+<div class="section">
+<div class="secttitle">
+<p>Starting and stopping the Brick Engine</p>
+</div>
+
+<div class="text">
+<p>Just about everything you'll do with the Brick Engine requires
+that you initialize it first. After you're done, too, you may
+want to free up any resources held by the engine.</p></div>
+
+<p/><hr/><p/>
+<div class="function">
+<p><font size="5" color="#818100"><b>Function: </b></font>init_brick()</p>
+<div class="cproto">void init_brick();</div>
+
+<div class="text">
+<p>Prepares the engine internal data structures and activates the
+hardware.</p></div>
+</div>
+
+<p/><hr/><p/>
+<div class="function">
+<p><font size="5" color="#818100"><b>Function: </b></font>quit_brick()</p>
+<div class="cproto">void quit_brick();</div>
+
+<div class="text">
+<p>Shuts down the engine, closes the graphics display, halts all
+sounds, and frees up any resources used by the engine.</p></div>
+</div>
+</div>
+
+<p/><hr/><p/>
+<div class="section">
+<div class="secttitle">
+<p>Graphics</p>
+</div>
+
+<div class="text">
+<p>The graphics display may be started and stopped at any time
+(for example, to change from windowed to full-screen mode, or to
+change the display resolution), without interfering with the
+rest of the engine. These are the routines to activate and
+deactivate the graphics display.</p></div>
+
+<p/><hr/><p/>
+<div class="function">
+<p><font size="5" color="#818100"><b>Function: </b></font>graphics_open()</p>
+<div class="cproto">int graphics_open(int mode, int w, int h, int fs, int zf);</div>
+
+<div class="text">
+<p>Opens the graphics display. The <span class="label">mode</span> value
+is one of the following: <span class="label">GRAPHICS_SDL</span>
+(standard SDL display) or <span class="label">GRAPHICS_ACCEL</span>
+(OpenGL-accelerated blit to screen). The graphics display size
+is given in <span class="label">w</span> and <span class="label">h</span>.</p></div>
+
+<div class="text">
+<p><span class="note">Note: There is a compile-time maximum width and
+height, which defaults to 640x480.</span></p></div>
+
+<div class="text">
+<p>Full-screen mode is controlled by the boolean
+<span class="label">fs</span> flag. In the accelerated graphics output
+mode, the zoom factor <span class="label">zf</span> determines the
+amount by which the display is scaled. <span class="note">Note that a
+zoom factor of either 0 or 1 has no effect on the output
+display.</span></p></div>
+
+<div class="text">
+<p>Returns 0 on success, or an error code on failure.</p></div>
+</div>
+
+<p/><hr/><p/>
+<div class="function">
+<p><font size="5" color="#818100"><b>Function: </b></font>graphics_close()</p>
+<div class="cproto">void graphics_close();</div>
+
+<div class="text">
+<p>Closes the active graphics display.</p></div>
+</div>
+
+<p/><hr/><p/>
+<div class="function">
+<p><font size="5" color="#818100"><b>Function: </b></font>graphics_info()</p>
+<div class="cproto">int graphics_info(int *w, int *h);</div>
+
+<div class="text">
+<p>Returns the active graphics mode, and stores the current display
+resolution in <span class="label">w</span> and <span class="label">h</span>.</p></div>
+</div>
+</div>
+
+<p/><hr/><p/>
+<div class="section">
+<div class="secttitle">
+<p>Audio</p>
+</div>
+
+<div class="text">
+<p>Audio output may be activated or deactivated at any time. These
+routines let you do that.</p></div>
+
+<p/><hr/><p/>
+<div class="function">
+<p><font size="5" color="#818100"><b>Function: </b></font>audio_open()</p>
+<div class="cproto">int audio_open(int mode, char *file);</div>
+
+<div class="text">
+<p>Opens the audio output. <span class="label">mode</span> is one of the
+following:</p></div>
+
+<div class="text">
+<p>AUDIO_SPEAKER (speaker output).</p></div>
+</div>
+
+<p/><hr/><p/>
+<div class="function">
+<p><font size="5" color="#818100"><b>Function: </b></font>audio_close()</p>
+<div class="cproto">void audio_close();</div>
+
+<div class="text">
+<p>Closes the active audio output.</p></div>
+</div>
+</div>
+
+<p/><hr/><p/>
+<div class="section">
+<div class="secttitle">
+<p>Input</p>
+</div>
+
+<div class="text">
+<p>These are functions used to configure and read user input from
+keyboard, joystick, and mouse. The joystick is the primary type
+of input device recognized by the Brick Engine, and the engine
+supports up to eight joysticks at a time. You don't need any
+actual joysticks to play, because the engine will map all
+keyboard input onto one of eight "virtual joysticks": each
+keypress is turned into an axis, hat, or button motion on one of
+the eight joysticks, and this keyboard-input mapping can be
+altered at any time. If you've got actual hardware joysticks
+plugged in, the inputs provided by these joysticks (axes, hats,
+and buttons) can be read directly.</p></div>
+
+<p/><hr/><p/>
+<div class="function">
+<p><font size="5" color="#818100"><b>Function: </b></font>io_fetch()</p>
+<div class="cproto">int io_fetch(int input, input *io);</div>
+
+<div class="text">
+<p>Retrieves the status of the given input into
+<span class="label">io</span>.</p></div>
+
+<div class="text">
+<p>There are eight inputs from which movement and actions can be
+requested, numbered 0 through 7. Keys can be assigned to any
+action (axis, hat, or button) on any input. If joysticks are
+plugged in, they are assigned to the inputs starting at
+<span class="label">0</span>.</p></div>
+
+<div class="text">
+<p>Axes have a range from -127 to 127. Key presses will set the
+axis to the ends of this range, while an analog joystick input
+may return any value within this range. Up to eight axes are
+read, either from joystick or from the assigned keys.</p></div>
+
+<div class="text">
+<p>Usually, the first two axes will represent horizontal and
+vertical motion, either from the keyboard or the joystick.
+Joysticks with more than one analog stick will use additional
+axes to represent the movement on the additional sticks. By
+default, the arrow keys are mapped onto axes 0 and 1 on input 0.</p></div>
+
+<div class="text">
+<p>Hats represent the four-way directional inputs present on some
+joysticks. Hat values range from -1 to 1 and are returned as
+pairs of horizontal and vertical results. Note that a joypad-
+style controller with just one directional input probably
+returns its results as a pair of axes rather than a hat. By
+default, the keys <span class="label">wasd</span> are mapped onto hat
+0 of input 0.</p></div>
+
+<div class="text">
+<p>Button presses return either 0 or 1. By default, the keys
+<span class="label">left ctrl</span>, <span class="label">left alt</span>,
+<span class="label">z</span>, and <span class="label">x</span> are assigned
+to button presses 0 through 3 on input 0.</p></div>
+
+<div class="text">
+<p>There are eight axes, four hats, and twenty buttons available on
+each input. If a physical joystick has more axes, hats, or
+buttons than this, the excess will be ignored.</p></div>
+
+<div class="text">
+<p>The keys <span class="label">space</span>, <span class="label">tab</span>,
+<span class="label">enter</span> or <span class="label">return</span> (as
+<span class="label">select</span>), <span class="label">pause</span>, and
+<span class="label">escape</span> are always included in the results.</p></div>
+</div>
+
+<p/><hr/><p/>
+<div class="function">
+<p><font size="5" color="#818100"><b>Function: </b></font>io_mouse()</p>
+<div class="cproto">int io_mouse(int input, mouse *);</div>
+
+<div class="text">
+<p>Reads the mouse motions on the specified mouse input.</p></div>
+</div>
+
+<p/><hr/><p/>
+<div class="function">
+<p><font size="5" color="#818100"><b>Function: </b></font>io_grab()</p>
+<div class="cproto">void io_grab(int flag);</div>
+
+<div class="text">
+<p>Grabs the keyboard and mouse input, preventing interference from
+the window manager or operating system. <span class="note">Warning: Be
+sure that your game is thoroughly debugged before using this
+routine!! If your game has an infinite loop and the input grab
+is enabled, there will be no way for the player to exit
+gracefully.</span></p></div>
+</div>
+
+<p/><hr/><p/>
+<div class="function">
+<p><font size="5" color="#818100"><b>Function: </b></font>io_has_quit()</p>
+<div class="cproto">int io_has_quit();</div>
+
+<div class="text">
+<p>Returns whether or not a quit signal has been received by the
+game, e.g. clicking the close button of the game window.</p></div>
+</div>
+
+<p/><hr/><p/>
+<div class="function">
+<p><font size="5" color="#818100"><b>Function: </b></font>io_wait()</p>
+<div class="cproto">int io_wait(int delay);</div>
+
+<div class="text">
+<p>Waits until all input buffers are cleared, and then waits until
+any activity on any of the inputs is received. If the
+application-quit button is pressed, this immediately returns
+ERR. The <span class="label">delay</span> value indicates how many
+times each second the inputs will be checked for activity, so
+that the processor use can be kept low.</p></div>
+</div>
+
+<p/><hr/><p/>
+<div class="function">
+<p><font size="5" color="#818100"><b>Function: </b></font>io_assign()</p>
+<div class="cproto">void io_assign(int input, int type, ... );
+void io_assign(int input, int type = IO_AXIS, int axis_no,
+    int dir, int keycode);
+void io_assign(int input, int type = IO_HAT, int hat_no,
+    int dir, int keycode);
+void io_assign(int input, int type = IO_BUTTON,
+    int button_no, int keycode);</div>
+
+<div class="text">
+<p>Assigns a keycode to the action on the given input. The
+combination of axis, hat, button number, and direction specifies
+which joystick action will have a keyboard-mapping assigned. The
+type must be one of <span class="label">IO_AXIS</span>,
+<span class="label">IO_HAT</span>, <span class="label">IO_BUTTON</span>. If
+the action type is <span class="label">IO_AXIS</span>, then only the
+directions <span class="label">IO_LEFT</span> and
+<span class="label">IO_RIGHT</span> are permitted. If the action type
+is <span class="label">IO_HAT</span>, then the directions
+<span class="label">IO_LEFT</span>, <span class="label">IO_UP</span>,
+<span class="label">IO_DOWN</span>, and <span class="label">IO_RIGHT</span>
+are permitted. Note that if the action type is
+<span class="label">IO_BUTTON</span>, then the direction argument is
+omitted.</p></div>
+</div>
+
+<p/><hr/><p/>
+<div class="function">
+<p><font size="5" color="#818100"><b>Function: </b></font>io_read_key()</p>
+<div class="cproto">int io_read_key()</div>
+
+<div class="text">
+<p>Halts until a single keypress can be read and a keycode
+returned.</p></div>
+
+<div class="text">
+<p>This is not useful for general-purpose input, but is intended
+only to let the programmer determine keycodes interactively, for
+use with <span class="label">io_assign()</span>.</p></div>
+</div>
+</div>
+</div>
+
+<p/><hr/><p/>
+<div class="section">
+<div class="secttitle">
+<p>The Graphics Subsystem</p>
+</div>
+
+<div class="text">
+<p>There are two parts of the Brick Engine graphics subsystem that
+deal with system-wide graphics configuration: render settings
+and font handling. Everything else (for example, sprites,
+strings, and tile-based maps) is addressed later on.</p></div>
+
+<p/><hr/><p/>
+<div class="section">
+<div class="secttitle">
+<p>Rendering</p>
+</div>
+
+<div class="text">
+<p>These are the routines used to set system-wide rendering
+options.</p></div>
+
+<p/><hr/><p/>
+<div class="function">
+<p><font size="5" color="#818100"><b>Function: </b></font>render_set_bg_fill()</p>
+<div class="cproto">void render_set_bg_fill(int fill);</div>
+
+<div class="text">
+<p>Enable or disable the solid-color background fill.</p></div>
+</div>
+
+<p/><hr/><p/>
+<div class="function">
+<p><font size="5" color="#818100"><b>Function: </b></font>render_set_bg_color()</p>
+<div class="cproto">void render_set_bg_color(char r, char g, char b);</div>
+
+<div class="text">
+<p>Sets the background fill color to the given RGB values.</p></div>
+</div>
+
+<p/><hr/><p/>
+<div class="function">
+<p><font size="5" color="#818100"><b>Function: </b></font>render_set_overdraw()</p>
+<div class="cproto">void render_set_overdraw(int w, int h);</div>
+
+<div class="text">
+<p>Sets the amount of overdraw applied to the internal render
+canvas. This does not affect the displayed canvas size. Some
+sprite frame types (e.g. the pixel-repositioning frame) may
+depend on graphics data being drawn outside the screen borders
+for proper composition of the display, and the overdraw
+instructs the renderer to generate this extra data.</p></div>
+</div>
+
+<p/><hr/><p/>
+<div class="function">
+<p><font size="5" color="#818100"><b>Function: </b></font>render_display()</p>
+<div class="cproto">void render_display();</div>
+
+<div class="text">
+<p>Renders and displays the current frame.</p></div>
+</div>
+
+<p/><hr/><p/>
+<div class="function">
+<p><font size="5" color="#818100"><b>Function: </b></font>render_to_disk()</p>
+<div class="cproto">int render_to_disk(char *file);</div>
+
+<div class="text">
+<p>Renders the current frame to the so-named file.</p></div>
+</div>
+</div>
+
+<p/><hr/><p/>
+<div class="section">
+<div class="secttitle">
+<p>Fonts</p>
+</div>
+
+<div class="text">
+<p>The Brick Engine has a simple and lightweight font renderer
+built in. Fonts are loaded into the engine as bitmaps, and
+characters are fixed-width. One font, named
+<span class="label">default</span>, is built into the Brick Engine,
+and additional fonts can be loaded at any time.</p></div>
+
+<p/><hr/><p/>
+<div class="function">
+<p><font size="5" color="#818100"><b>Function: </b></font>font_add()</p>
+<div class="cproto">void font_add(char *name, int w, int h, unsigned char *data,
+    color *key);</div>
+
+<div class="text">
+<p>Adds a new font named <span class="label">name</span>, with the bitmap
+data stored in <span class="label">data</span>. If
+<span class="label">key</span> is not null, it will be used as a
+chroma key for the font display. The <span class="label">data</span>
+buffer is three-bytes-per-pixel RGB data, consisting of an image
+of all characters in the font arranged in order. The dimensions
+of each character are given in <span class="label">w</span> and
+<span class="label">h</span>, and the font image must be 128
+characters wide.</p></div>
+</div>
+
+<p/><hr/><p/>
+<div class="function">
+<p><font size="5" color="#818100"><b>Function: </b></font>font_info()</p>
+<div class="cproto">int font_info(char *name, int *w, int *h);</div>
+
+<div class="text">
+<p>Retrieves the character dimensions of the named font. Returns 0
+on success, or ERR if the font does not exist.</p></div>
+</div>
+
+<p/><hr/><p/>
+<div class="function">
+<p><font size="5" color="#818100"><b>Function: </b></font>font_from_disk()</p>
+<div class="cproto">void font_from_disk(char *name, char *file, color *key);</div>
+
+<div class="text">
+<p>Adds a new font named <span class="label">name</span> from the
+compressed image file named <span class="label">file</span>. If
+<span class="label">key</span> is not null, it will be used as a
+chroma key for the font display. The font image is assumed to be
+128 characters wide. <span class="note">Note: This routine is only
+available if the Brick Engine was built with SDL_image
+support.</span></p></div>
+</div>
+
+<p/><hr/><p/>
+<div class="function">
+<p><font size="5" color="#818100"><b>Function: </b></font>font_from_buffer()</p>
+<div class="cproto">void font_from_buffer(char *name, int len,
+    unsigned char *data, color *key);</div>
+
+<div class="text">
+<p>Adds a new font named <span class="label">name</span> from the
+<span class="label">data</span> buffer which contain a compressed
+image file. If <span class="label">key</span> is not null, it will be
+used as a chroma key for the font display. The font image is
+assumed to be 128 characters wide. <span class="note">Note: This
+routine is only available if the Brick Engine was built with
+SDL_image support.</span></p></div>
+</div>
+</div>
+</div>
+
+<p/><hr/><p/>
+<div class="section">
+<div class="secttitle">
+<p>The Audio Subsystem</p>
+</div>
+
+<div class="text">
+<p>Every game needs sound! The Brick Engine provides functionality
+that makes it possible to handle both song and sound playback
+with ease.</p></div>
+
+<p/><hr/><p/>
+<div class="section">
+<div class="secttitle">
+<p>Sound playback</p>
+</div>
+
+<div class="text">
+<p>These routines let you load sounds from different sources (from
+a known sound file format stored on disk or in a memory buffer,
+or as raw sound data), play them as needed, and stop them or
+adjust the sound volume/panning in mid-play.</p></div>
+
+<p/><hr/><p/>
+<div class="function">
+<p><font size="5" color="#818100"><b>Function: </b></font>sound_load_from_disk()</p>
+<div class="cproto">sound *sound_load_from_disk(char *filename);</div>
+
+<div class="text">
+<p>Loads a sound from a file on disk. The list of supported file
+formats can be found in the documentation for 
+<a href="http://www.libsdl.org/projects/SDL_mixer/">SDL_mixer.</a></p></div>
+</div>
+
+<p/><hr/><p/>
+<div class="function">
+<p><font size="5" color="#818100"><b>Function: </b></font>sound_load_from_buffer()</p>
+<div class="cproto">sound *sound_load_from_buffer(int length, unsigned char *data);</div>
+
+<div class="text">
+<p>Loads a sound from the <span class="label">data</span> buffer. The
+buffer length is given in <span class="label">length</span>. The list
+of supported file formats can be found in the documentation for
+
+<a href="http://www.libsdl.org/projects/SDL_mixer/">SDL_mixer.</a></p></div>
+</div>
+
+<p/><hr/><p/>
+<div class="function">
+<p><font size="5" color="#818100"><b>Function: </b></font>sound_load_raw()</p>
+<div class="cproto">sound *sound_load_raw(int length, unsigned char *data);</div>
+
+<div class="text">
+<p>Creates a sound from the given data buffer. The data must match
+the audio format set at compile time. By default, the audio
+format is 8-bit unsigned data.</p></div>
+</div>
+
+<p/><hr/><p/>
+<div class="function">
+<p><font size="5" color="#818100"><b>Function: </b></font>sound_play()</p>
+<div class="cproto">int sound_play(sound *sound, int volume);</div>
+
+<div class="text">
+<p>Plays the given sound. The volume may range from 0 to 128. This
+returns the ID of the audio channel that is playing the sound,
+so that the sound can be stopped or have its volume or panning
+values adjusted.</p></div>
+</div>
+
+<p/><hr/><p/>
+<div class="function">
+<p><font size="5" color="#818100"><b>Function: </b></font>sound_halt()</p>
+<div class="cproto">void sound_halt(int id);</div>
+
+<div class="text">
+<p>Stops the sound playing on the given channel. If
+<span class="label">id</span> is -1, halt all sounds.</p></div>
+</div>
+
+<p/><hr/><p/>
+<div class="function">
+<p><font size="5" color="#818100"><b>Function: </b></font>sound_adjust_vol()</p>
+<div class="cproto">void sound_adjust_vol(int id, int volume);</div>
+
+<div class="text">
+<p>Sets the volume of the sound playing on the given channel ID.
+The volume may range from 0 to 128. If <span class="label">id</span>
+is -1, sets the volume for all currently-playing sounds.</p></div>
+</div>
+
+<p/><hr/><p/>
+<div class="function">
+<p><font size="5" color="#818100"><b>Function: </b></font>sound_adjust_pan()</p>
+<div class="cproto">void sound_adjust_an(int id, int panning);</div>
+
+<div class="text">
+<p>Sets the panning of the sound playing on the given channel ID.
+The panning value ranges from 0 (left speaker only) to 254
+(right speaker only), and is balanced at 127. If
+<span class="label">id</span> is -1, sets the panning for all
+currently-playing sounds.</p></div>
+</div>
+</div>
+
+<p/><hr/><p/>
+<div class="section">
+<div class="secttitle">
+<p>Song playback</p>
+</div>
+
+<div class="text">
+<p>The song playback routines will let you start, stop, and
+otherwise control the background music for your game.
+<span class="note">Note that because the Brick Engine relies on 
+<a href="http://www.libsdl.org/projects/SDL_mixer/">SDL_mixer</a> for its music playback support, so the list
+of supported file formats depends on how SDL_Mixer has built for
+your system.</span></p></div>
+
+<p/><hr/><p/>
+<div class="function">
+<p><font size="5" color="#818100"><b>Function: </b></font>song_play_from_disk()</p>
+<div class="cproto">void song_play_from_disk(char *filename,
+    int fade_in_delay);</div>
+
+<div class="text">
+<p>Loads and plays the named song from disk, with a fade-in delay
+given in milliseconds.</p></div>
+</div>
+
+<p/><hr/><p/>
+<div class="function">
+<p><font size="5" color="#818100"><b>Function: </b></font>song_play_from_buffer()</p>
+<div class="cproto">void song_play_from_buffer(int length, unsigned char *buffer,
+    int fade_in_delay);</div>
+
+<div class="text">
+<p>Loads and plays the named song from a memory buffer of length
+<span class="label">length</span>, with a fade-in delay given in
+milliseconds.</p></div>
+</div>
+
+<p/><hr/><p/>
+<div class="function">
+<p><font size="5" color="#818100"><b>Function: </b></font>song_pause()</p>
+<div class="cproto">void song_pause();</div>
+
+<div class="text">
+<p>Pauses the currently-playing song.</p></div>
+</div>
+
+<p/><hr/><p/>
+<div class="function">
+<p><font size="5" color="#818100"><b>Function: </b></font>song_resume()</p>
+<div class="cproto">void song_resume();</div>
+
+<div class="text">
+<p>Resumes the currently-paused song.</p></div>
+</div>
+
+<p/><hr/><p/>
+<div class="function">
+<p><font size="5" color="#818100"><b>Function: </b></font>song_stop()</p>
+<div class="cproto">void song_stop(int fade_out_delay);</div>
+
+<div class="text">
+<p>Stops the currently-playing song with fade-out delay given in
+milliseconds.</p></div>
+</div>
+
+<p/><hr/><p/>
+<div class="function">
+<p><font size="5" color="#818100"><b>Function: </b></font>song_set_position()</p>
+<div class="cproto">void song_set_position(int pos);</div>
+
+<div class="text">
+<p>Sets the position of the currently-playing song.</p></div>
+</div>
+
+<p/><hr/><p/>
+<div class="function">
+<p><font size="5" color="#818100"><b>Function: </b></font>song_adjust_vol()</p>
+<div class="cproto">void song_adjust_vol(int volume);</div>
+
+<div class="text">
+<p>Sets the music playback volume. The volume can range from 0 to
+128.</p></div>
+</div>
+</div>
+</div>
+
+<p/><hr/><p/>
+<div class="section">
+<div class="secttitle">
+<p>Items and Lists</p>
+</div>
+
+<div class="text">
+<p>These are the bread-and-butter routines in the Brick Engine, the
+API calls you'll use again and again in developing your games,
+so it's worth it to familiarize yourself with these.</p></div>
+
+<p/><hr/><p/>
+<div class="section">
+<div class="secttitle">
+<p>Lists</p>
+</div>
+
+<div class="text">
+<p>Lists are everywhere in computing, and the Brick Engine is no
+different. The list implementation built into the engine is a
+pretty simple doubly-linked list, and you'll most often use it
+in two places: adding sprites and strings to the sprite- and
+string- display lists, and getting back lists of sprites from
+the introspection routines. (You may also find some more
+sophisticated uses for the Brick Engine lists, though, e.g.
+setting up some intricate collision-detection schemes where
+you'll test certain groups of enemy sprites against certain
+player projectiles.) These routines are what you'll use to
+create and manipulate Brick Engine lists.</p></div>
+
+<p/><hr/><p/>
+<div class="function">
+<p><font size="5" color="#818100"><b>Function: </b></font>list_create()</p>
+<div class="cproto">list *list_create();</div>
+
+<div class="text">
+<p>Creates a new list.</p></div>
+</div>
+
+<p/><hr/><p/>
+<div class="function">
+<p><font size="5" color="#818100"><b>Function: </b></font>list_empty()</p>
+<div class="cproto">void list_empty(list *list);</div>
+
+<div class="text">
+<p>Empties the given list. Note that this does not delete any of
+the items in the list.</p></div>
+</div>
+
+<p/><hr/><p/>
+<div class="function">
+<p><font size="5" color="#818100"><b>Function: </b></font>list_delete()</p>
+<div class="cproto">void list_delete(list *list);</div>
+
+<div class="text">
+<p>Deletes the given list. Note that this does not delete any of
+the items in the list.</p></div>
+</div>
+
+<p/><hr/><p/>
+<div class="function">
+<p><font size="5" color="#818100"><b>Function: </b></font>list_add()</p>
+<div class="cproto">void list_add(list *list, void *item);</div>
+
+<div class="text">
+<p>Adds the given item to the end of the list.</p></div>
+</div>
+
+<p/><hr/><p/>
+<div class="function">
+<p><font size="5" color="#818100"><b>Function: </b></font>list_prepend()</p>
+<div class="cproto">void list_prepend(list *list, void *item);</div>
+
+<div class="text">
+<p>Adds the given item to the start of the list.</p></div>
+</div>
+
+<p/><hr/><p/>
+<div class="function">
+<p><font size="5" color="#818100"><b>Function: </b></font>list_shift()</p>
+<div class="cproto">void *list_shift(list *list);</div>
+
+<div class="text">
+<p>Removes the first item from the head of the list and returns it.</p></div>
+</div>
+
+<p/><hr/><p/>
+<div class="function">
+<p><font size="5" color="#818100"><b>Function: </b></font>list_pop()</p>
+<div class="cproto">void *list_pop(list *list);</div>
+
+<div class="text">
+<p>Removes the last item from the list and returns it.</p></div>
+</div>
+
+<p/><hr/><p/>
+<div class="function">
+<p><font size="5" color="#818100"><b>Function: </b></font>list_remove()</p>
+<div class="cproto">void list_remove(list *list, void *item, int direction);</div>
+
+<div class="text">
+<p>Removes the given item from the list. The
+<span class="label">direction</span> flag can be set to LIST_HEAD,
+LIST_TAIL, or LIST_ALL. If set to LIST_HEAD or LIST_TAIL, this
+routine removes the first matching entry it finds from the
+beginning or end of the list. If <span class="label">LIST_ALL</span>
+is given, then all matching items are removed from the list.</p></div>
+</div>
+
+<p/><hr/><p/>
+<div class="function">
+<p><font size="5" color="#818100"><b>Function: </b></font>list_length()</p>
+<div class="cproto">int list_length(list *list);</div>
+
+<div class="text">
+<p>Returns a count of the number of items in the given list.</p></div>
+</div>
+
+<p/><hr/><p/>
+<div class="function">
+<p><font size="5" color="#818100"><b>Function: </b></font>list_find()</p>
+<div class="cproto">int list_find(list *list, void *item);</div>
+
+<div class="text">
+<p>Determines whether the given item is in the list.</p></div>
+</div>
+
+<p/><hr/><p/>
+<div class="function">
+<p><font size="5" color="#818100"><b>Function: </b></font>list_sort()</p>
+<div class="cproto">void list_sort(list *list, int(*)(void *, void *));</div>
+
+<div class="text">
+<p>Sorts the list using the provided comparison function.</p></div>
+</div>
+
+<p/><hr/><p/>
+<div class="section">
+<div class="secttitle">
+<p>List Iterator Macros</p>
+</div>
+
+<div class="text">
+<p>There are now several macros provided in the Brick Engine header
+file to provide basic list iteration capability.</p></div>
+
+<p/><hr/><p/>
+<div class="function">
+<p><font size="5" color="#818100"><b>Function: </b></font>iterator_start()</p>
+<div class="cproto">iterator_start(iterator i, list l);</div>
+
+<div class="text">
+<p>Initializes an iterator struct to point to the head of the given
+list. You must call this before using any of the other iterator
+macros.</p></div>
+</div>
+
+<p/><hr/><p/>
+<div class="function">
+<p><font size="5" color="#818100"><b>Function: </b></font>iterator_next()</p>
+<div class="cproto">iterator_next(iterator i);</div>
+
+<div class="text">
+<p>Advances the iterator one step forward. If there are no more
+list entries, then this does nothing.</p></div>
+</div>
+
+<p/><hr/><p/>
+<div class="function">
+<p><font size="5" color="#818100"><b>Function: </b></font>iterator_data()</p>
+<div class="cproto">iterator_data(iterator i);</div>
+
+<div class="text">
+<p>Retrieves the item held in the current list position.</p></div>
+</div>
+
+<p/><hr/><p/>
+<div class="function">
+<p><font size="5" color="#818100"><b>Function: </b></font>iterator_ct()</p>
+<div class="cproto">iterator_ct(iterator i);</div>
+
+<div class="text">
+<p>Gives the number of iterations through the list that have been
+made in this iteration.</p></div>
+</div>
+</div>
+</div>
+
+<p/><hr/><p/>
+<div class="section">
+<div class="secttitle">
+<p>Frames</p>
+</div>
+
+<div class="text">
+<p>A frame is a container for any sort of graphics data in the
+Brick Engine. Whether you are working with simple pixel data,
+color keyed data (i.e. one color treated as transparent), or one
+of the various visual effects (e.g. convolution kernel,
+desaturation, and so on), the data is always stored in a frame.
+Some of the sprite and tile routines, such as
+sprite_add_frame_data(), handle the process of creating and
+loading the frame for you, but others, such as
+sprite_add_subframe(), require that you create and prepare the
+frame before passing it to the routine.</p></div>
+
+<div class="text">
+<p>Frames can be sliced into subframes (good for cutting up sprite
+sheets), and it's also possible to convert RGB frames into
+almost any other frame type, e.g. to create a desaturated
+version of a sprite, for use in some effect.</p></div>
+
+<div class="text">
+<p>Last, if you've built the Brick Engine with the SDL_Image
+dependency, you can load and unpack a variety of image types
+directly into frames, either from disk or from a memory buffer.</p></div>
+
+<p/><hr/><p/>
+<div class="function">
+<p><font size="5" color="#818100"><b>Function: </b></font>frame_create()</p>
+<div class="cproto">frame *frame_create(int mode, int width, int height, void *data,
+    void *auxiliary);</div>
+
+<div class="text">
+<p>Creates a new graphics frame using the given frame data.
+<span class="label">mode</span> is one of: FRAME_NONE (no display
+data), FRAME_RGB (RGB data with an optional chroma-key),
+FRAME_DISPL (pixel-displacement frame), FRAME_CONVO (convolution
+kernel), FRAME_BR (brightness-adjusting frame), FRAME_CT
+(contrast-adjusting frame), FRAME_LT (luminance-adjusting
+frame), FRAME_SAT (saturation-adjusting frame), FRAME_LUT (RGB
+lookup-table frame). The width and height are given in
+<span class="label">width</span> and <span class="label">height</span>.</p></div>
+
+<div class="text">
+<p>A frame type of FRAME_NONE takes no display data and produces no
+output. The <span class="label">data</span> and
+<span class="label">auxiliary</span> arguments are ignored. This isn't
+very useful, except for situations where some unusual collision
+detection is needed.</p></div>
+
+<div class="text">
+<p>If the frame type is FRAME_RGB, the data is a buffer of RGB
+pixels. An optional chroma key can be passed in as a
+<span class="label">color</span> in <span class="label">auxiliary</span>.
+The frame data will be drawn onto the render canvas.</p></div>
+
+<div class="text">
+<p>If the type is FRAME_DISPL, the pixel data is an array of 16-bit
+(big-endian) X/Y coordinate pairs. Each coordinate pair
+represents an offset from the pixel in the frame to the location
+in the underlying image data from which to retrieve the given
+pixel. For example, pixel data consisting of only zeros has no
+effect, while pixel data containing all pairs of -1, -1 will
+create a frame that offsets the underlying image data up and to
+the left by one pixel.</p></div>
+
+<div class="text">
+<p>If the type is FRAME_CONVO, then the <span class="label">data</span>
+array is a pixel mask, in which each non-zero pixel applies the
+specified convolution kernel to the underlying image data. The
+convolution kernel definition is passed into
+<span class="label">auxiliary</span> as a
+<span class="label">convolution</span>.</p></div>
+
+<div class="text">
+<p>If the type is FRAME_BR, the data is a buffer of RGB pixels. A
+pixel component value of 64 is neutral and doesn't alter the
+image brightness. Values less than 64 darken the image, and
+values greater than 64 brighten the image.</p></div>
+
+<div class="text">
+<p>If the type is FRAME_CT, the data is a buffer of unsigned char
+values which adjust the contrast of the underlying image. A
+pixel component value of 64 is neutral and leaves the image
+contrast unaltered. Values less than 64 decrease the image
+contrast to a neutral grey, and values greater than 64 increase
+the contrast of the image.</p></div>
+
+<div class="text">
+<p>If the type is FRAME_LT, the data is a buffer of RGB pixels. A
+pixel component value of 128 is neutral and doesn't alter image
+lightness. Values less than 128 darken the image toward black,
+and values greater than 128 lighten the image toward white.</p></div>
+
+<div class="text">
+<p>If the type is FRAME_SAT, the data is a buffer of unsigned char
+values which adjust the saturation of the underlying image. A
+pixel value of 128 leaves the image unchanged. A value of 64
+desaturates the image, and values between 64 and 128 give
+varying degrees of desaturation. Values less than 64 invert the
+hue of the image data. Values greater than 128 increase the
+saturation.</p></div>
+
+<div class="text">
+<p>If the type is FRAME_LUT, the data is a buffer of unsigned chars
+which act as a pixel mask. Each non-zero pixel causes the
+underlying image data to be replaced according to that pixel's
+value in the lookup table. The lookup table is passed into
+<span class="label">auxiliary</span> as a 256-element array of
+<span class="label">color</span> values.</p></div>
+</div>
+
+<p/><hr/><p/>
+<div class="function">
+<p><font size="5" color="#818100"><b>Function: </b></font>frame_info()</p>
+<div class="cproto">int frame_info(frame *frame, int *mode, int *w, int *h);</div>
+
+<div class="text">
+<p>Retrieves the frame type and dimensions. Returns 0 on success,
+or ERR if the frame does not exist.</p></div>
+</div>
+
+<p/><hr/><p/>
+<div class="function">
+<p><font size="5" color="#818100"><b>Function: </b></font>frame_copy()</p>
+<div class="cproto">frame *frame_copy(frame *frame);</div>
+
+<div class="text">
+<p>Makes a copy of the given frame.</p></div>
+</div>
+
+<p/><hr/><p/>
+<div class="function">
+<p><font size="5" color="#818100"><b>Function: </b></font>frame_delete()</p>
+<div class="cproto">void frame_delete(frame *frame);</div>
+
+<div class="text">
+<p>Deletes the given frame.</p></div>
+</div>
+
+<p/><hr/><p/>
+<div class="function">
+<p><font size="5" color="#818100"><b>Function: </b></font>frame_set_mask()</p>
+<div class="cproto">void frame_set_mask(frame *frame, unsigned char *data);</div>
+
+<div class="text">
+<p>Sets the pixel mask for the given frame. This can be useful if
+you plan to use one frame both as a tile and as a sprite.</p></div>
+</div>
+
+<p/><hr/><p/>
+<div class="function">
+<p><font size="5" color="#818100"><b>Function: </b></font>frame_set_mask_from()</p>
+<div class="cproto">void frame_set_mask_from(frame *frame, frame *source);</div>
+
+<div class="text">
+<p>Sets the pixel mask for the given frame one of two ways,
+depending on the source frame. If the source frame has a color
+key set, then the pixel mask is generated by non-transparent
+pixels. If the source frame has no transparency set, then each
+pixel is desaturated and any pixels darker than middle gray are
+treated as solid. This routine only accepts RGB-type frames.</p></div>
+</div>
+
+<p/><hr/><p/>
+<div class="function">
+<p><font size="5" color="#818100"><b>Function: </b></font>frame_slice()</p>
+<div class="cproto">frame *frame_slice(frame *frame, int x, int y, int width, int height);</div>
+
+<div class="text">
+<p>Copies out a section out of the given RGB frame and returns it
+as a new frame.</p></div>
+</div>
+
+<p/><hr/><p/>
+<div class="function">
+<p><font size="5" color="#818100"><b>Function: </b></font>frame_convert()</p>
+<div class="cproto">frame *frame_convert(frame *frame, int mode, void *auxiliary);</div>
+
+<div class="text">
+<p>Converts an RGB frame to almost any other frame type. This
+routine modifies the frame in-place, so you should make a copy
+if you plan to use the original again.</p></div>
+</div>
+
+<p/><hr/><p/>
+<div class="function">
+<p><font size="5" color="#818100"><b>Function: </b></font>frame_from_disk()</p>
+<div class="cproto">frame *frame_from_disk(char *file, color *key);</div>
+
+<div class="text">
+<p>Loads and decompresses the given image file into an RGB frame.
+<span class="note">Note: This routine is only available if the Brick
+Engine was built with SDL_image support.</span></p></div>
+</div>
+
+<p/><hr/><p/>
+<div class="function">
+<p><font size="5" color="#818100"><b>Function: </b></font>frame_from_buffer()</p>
+<div class="cproto">frame *frame_from_buffer(int len, unsigned char *data, color *);</div>
+
+<div class="text">
+<p>Loads and decompresses an RGB frame from an image file stored in
+the given data buffer. <span class="note">Note: This routine is only
+available if the Brick Engine was built with SDL_image
+support.</span></p></div>
+</div>
+</div>
+
+<p/><hr/><p/>
+<div class="section">
+<div class="secttitle">
+<p>Layers</p>
+</div>
+
+<div class="text">
+<p>Layers are the basic building block of graphics programming with
+the Brick Engine. A layer consists of a sprite list, a tile-
+based map, and a string list. Any of these items can be omitted,
+and if all three are omitted, the layer is ignored. Each layer
+also has a camera position, which determines what part of the
+layer (i.e. the layer's sprites and map..more on strings in a
+minute) is visible. Strings are a little different, in that
+they're always rendered exactly where they're placed, and do not
+move when the layer camera is moved. The layers are rendered in
+order of creation, and they can be swapped with one another.</p></div>
+
+<div class="text">
+<p>Each layer can also have a viewport set, which determines the
+region of the screen where the layer will actually be drawn.
+(This allows for easy split-screen gaming, e.g. create a layer,
+set its viewport to the left half of the screen, then copy it
+into a new layer and set that layer's viewport to the right side
+of the screen. Each layer's camera can then be focused on
+different players.)</p></div>
+
+<div class="text">
+<p>Layers have two attributes which are worth mentioning:
+visibility and sorting. Layer visibility doesn't really need
+further explanation. The visibility attribute can be set at any
+time. Sorting, however, is more complicated. Some games may
+require that sprites are rendered in a certain order, e.g. a
+sprite that passes in front of another and then behind it, and
+sorting is a way to achieve that. When layer sorting is enabled,
+all sprites in that layer are sorted by their z-hint attribute
+before rendering, and are then rendered in order.</p></div>
+
+<p/><hr/><p/>
+<div class="function">
+<p><font size="5" color="#818100"><b>Function: </b></font>layer_count()</p>
+<div class="cproto">int layer_count();</div>
+
+<div class="text">
+<p>Returns the current number of layers.</p></div>
+</div>
+
+<p/><hr/><p/>
+<div class="function">
+<p><font size="5" color="#818100"><b>Function: </b></font>layer_add()</p>
+<div class="cproto">int layer_add();</div>
+
+<div class="text">
+<p>Adds a new layer and returns its ID. When a layer is added, a
+sprite list, map, and string list are automatically created.</p></div>
+</div>
+
+<p/><hr/><p/>
+<div class="function">
+<p><font size="5" color="#818100"><b>Function: </b></font>layer_reorder()</p>
+<div class="cproto">void layer_reorder(int first, int second);</div>
+
+<div class="text">
+<p>Swaps the first layer with the second.</p></div>
+</div>
+
+<p/><hr/><p/>
+<div class="function">
+<p><font size="5" color="#818100"><b>Function: </b></font>layer_remove()</p>
+<div class="cproto">void layer_remove(int id);</div>
+
+<div class="text">
+<p>Removes the specified layer</p></div>
+</div>
+
+<p/><hr/><p/>
+<div class="function">
+<p><font size="5" color="#818100"><b>Function: </b></font>layer_copy()</p>
+<div class="cproto">int layer_copy(int id);</div>
+
+<div class="text">
+<p>Makes a copy of the specified layer, assigning its properties
+(sprite list, map, etc) to the new layer.</p></div>
+</div>
+
+<p/><hr/><p/>
+<div class="function">
+<p><font size="5" color="#818100"><b>Function: </b></font>layer_get_sprite_list()</p>
+<div class="cproto">list *layer_get_sprite_list(int id);</div>
+
+<div class="text">
+<p>Returns the sprite list for the given layer.</p></div>
+</div>
+
+<p/><hr/><p/>
+<div class="function">
+<p><font size="5" color="#818100"><b>Function: </b></font>layer_get_map()</p>
+<div class="cproto">map *layer_get_map(int id);</div>
+
+<div class="text">
+<p>Returns the map for the given layer.</p></div>
+</div>
+
+<p/><hr/><p/>
+<div class="function">
+<p><font size="5" color="#818100"><b>Function: </b></font>layer_get_string_list()</p>
+<div class="cproto">list *layer_get_string_list(int id);</div>
+
+<div class="text">
+<p>Returns the string list for the given layer.</p></div>
+</div>
+
+<p/><hr/><p/>
+<div class="function">
+<p><font size="5" color="#818100"><b>Function: </b></font>layer_get_visible()</p>
+<div class="cproto">int layer_get_visible(int id);</div>
+
+<div class="text">
+<p>Returns a boolean value for the layer visibility setting.</p></div>
+</div>
+
+<p/><hr/><p/>
+<div class="function">
+<p><font size="5" color="#818100"><b>Function: </b></font>layer_get_sorting()</p>
+<div class="cproto">int layer_get_sorting(int id);</div>
+
+<div class="text">
+<p>Returns a boolean value for sprite z-hint sorting on the given
+layer.</p></div>
+</div>
+
+<p/><hr/><p/>
+<div class="function">
+<p><font size="5" color="#818100"><b>Function: </b></font>layer_set_sprite_list()</p>
+<div class="cproto">void layer_set_sprite_list(int id, list *list);</div>
+
+<div class="text">
+<p>Sets the sprite list for the given layer.</p></div>
+</div>
+
+<p/><hr/><p/>
+<div class="function">
+<p><font size="5" color="#818100"><b>Function: </b></font>layer_set_map()</p>
+<div class="cproto">void layer_set_map(int id, map *map);</div>
+
+<div class="text">
+<p>Sets the map for the given layer.</p></div>
+</div>
+
+<p/><hr/><p/>
+<div class="function">
+<p><font size="5" color="#818100"><b>Function: </b></font>layer_set_string_list()</p>
+<div class="cproto">void layer_set_string_list(int id, list *list);</div>
+
+<div class="text">
+<p>Sets the string list for the given layer.</p></div>
+</div>
+
+<p/><hr/><p/>
+<div class="function">
+<p><font size="5" color="#818100"><b>Function: </b></font>layer_set_visible()</p>
+<div class="cproto">void layer_set_visible(int id, int mode);</div>
+
+<div class="text">
+<p>Sets the layer visibility setting to the boolean value specified
+in <span class="label">mode</span>.</p></div>
+</div>
+
+<p/><hr/><p/>
+<div class="function">
+<p><font size="5" color="#818100"><b>Function: </b></font>layer_set_sorting()</p>
+<div class="cproto">void layer_set_sorting(int id, int mode);</div>
+
+<div class="text">
+<p>Sets the sprite z-hint sorting value setting on the given layer.</p></div>
+</div>
+
+<p/><hr/><p/>
+<div class="function">
+<p><font size="5" color="#818100"><b>Function: </b></font>layer_get_camera()</p>
+<div class="cproto">int layer_get_camera(int id, int *x, int *y);</div>
+
+<div class="text">
+<p>Retrieves the camera position on the specified layer. Returns 0
+on success, or ERR if the layer ID is invalid.</p></div>
+</div>
+
+<p/><hr/><p/>
+<div class="function">
+<p><font size="5" color="#818100"><b>Function: </b></font>layer_set_camera()</p>
+<div class="cproto">void layer_set_camera(int id, int x, int y);</div>
+
+<div class="text">
+<p>Sets the camera position on the specified layer.</p></div>
+</div>
+
+<p/><hr/><p/>
+<div class="function">
+<p><font size="5" color="#818100"><b>Function: </b></font>layer_adjust_camera()</p>
+<div class="cproto">void layer_adjust_camera(int id, int x, int y);</div>
+
+<div class="text">
+<p>Adjusts the camera position on the specified layer.</p></div>
+</div>
+
+<p/><hr/><p/>
+<div class="function">
+<p><font size="5" color="#818100"><b>Function: </b></font>layer_get_view()</p>
+<div class="cproto">int layer_get_view(int id, box *);</div>
+
+<div class="text">
+<p>Retreives the viewport on the specified layer. Returns 0 on
+success, or ERR if the layer ID is invalid.</p></div>
+</div>
+
+<p/><hr/><p/>
+<div class="function">
+<p><font size="5" color="#818100"><b>Function: </b></font>layer_set_view()</p>
+<div class="cproto">void layer_set_view(int id, box *);</div>
+
+<div class="text">
+<p>Sets the viewport on the specified layer.</p></div>
+</div>
+</div>
+
+<p/><hr/><p/>
+<div class="section">
+<div class="secttitle">
+<p>Maps</p>
+</div>
+
+<div class="text">
+<p>The tile-based map is an important part of much of 2D game
+programming, and the Brick Engine has some useful map
+functionality built in. Every display layer gets one map, and
+it's always optional whether or not to use the map for any given
+layer.</p></div>
+
+<div class="text">
+<p>A map consists of two things: a set of tiles, and an array of
+map data. So, to get started with the tile-based maps, you'll
+first create one or more tiles using the tile-handling commands.
+You'll then add them to the map's tile index, a fixed-length
+array of tiles (there's a compile-time limit that determines the
+size of this array, by default limited to 4096 tiles), and set
+the tile size as well as the overall map dimensions. Last,
+you'll set the map data, either one element at a time or all at
+once. Each entry in the map data array is a number that
+corresponds to the tile index containing the tile you want to
+appear at that position on the map.</p></div>
+
+<div class="text">
+<p>So, if you have a map that with a width of 3 and a height of 2,
+the map data array will consist of six numbers. The first three
+numbers indicate which tiles will show on the first row of the
+map, and the second three numbers indicate which tiles show on
+the second row of the map.</p></div>
+
+<div class="text">
+<p>If your map data has tile indices that haven't had any tiles
+set, then nothing will be rendered (e.g. a hole will appear, and
+whatever was underneath will be visible) at that point of the
+map.</p></div>
+
+<p/><hr/><p/>
+<div class="function">
+<p><font size="5" color="#818100"><b>Function: </b></font>map_create()</p>
+<div class="cproto">map *map_create();</div>
+
+<div class="text">
+<p>Creates a new map.</p></div>
+</div>
+
+<p/><hr/><p/>
+<div class="function">
+<p><font size="5" color="#818100"><b>Function: </b></font>map_empty()</p>
+<div class="cproto">void map_empty(map *map);</div>
+
+<div class="text">
+<p>Empties a map and resets all map attributes, but does not delete
+the map itself.</p></div>
+</div>
+
+<p/><hr/><p/>
+<div class="function">
+<p><font size="5" color="#818100"><b>Function: </b></font>map_delete()</p>
+<div class="cproto">void map_delete(map *map);</div>
+
+<div class="text">
+<p>Deletes a map.</p></div>
+</div>
+
+<p/><hr/><p/>
+<div class="function">
+<p><font size="5" color="#818100"><b>Function: </b></font>map_get_size()</p>
+<div class="cproto">int map_get_size(map *map, int *w, int *h);</div>
+
+<div class="text">
+<p>Stores the size of the map into <span class="label">w</span> and
+<span class="label">h</span>. Returns 0 on success, or ERR if the map
+does not exist.</p></div>
+</div>
+
+<p/><hr/><p/>
+<div class="function">
+<p><font size="5" color="#818100"><b>Function: </b></font>map_get_tile_size()</p>
+<div class="cproto">int map_get_tile_size(map *map, int *tw, int *th);</div>
+
+<div class="text">
+<p>Stores the map's tile size into <span class="label">tw</span> and
+<span class="label">th</span>. Returns 0 on success, or ERR if the map
+does not exist.</p></div>
+</div>
+
+<p/><hr/><p/>
+<div class="function">
+<p><font size="5" color="#818100"><b>Function: </b></font>map_get_tile()</p>
+<div class="cproto">int map_get_tile(map *map, int index, tile **tile);</div>
+
+<div class="text">
+<p>Stores the tile pointer for the given map index into
+<span class="label">tile</span>. Returns 0 on success, or ERR if the
+map does not exist.</p></div>
+</div>
+
+<p/><hr/><p/>
+<div class="function">
+<p><font size="5" color="#818100"><b>Function: </b></font>map_set_size()</p>
+<div class="cproto">void map_set_size(map *map, int w, int h);</div>
+
+<div class="text">
+<p>Sets the overall dimensions for the given map.</p></div>
+</div>
+
+<p/><hr/><p/>
+<div class="function">
+<p><font size="5" color="#818100"><b>Function: </b></font>map_set_tile_size()</p>
+<div class="cproto">void map_set_tile_size(map *map, int tw, int th);</div>
+
+<div class="text">
+<p>Sets the tile size for the given map.</p></div>
+</div>
+
+<p/><hr/><p/>
+<div class="function">
+<p><font size="5" color="#818100"><b>Function: </b></font>map_set_tile()</p>
+<div class="cproto">void map_set_tile(map *map, int index, tile *tile);</div>
+
+<div class="text">
+<p>Loads the given tile into the map's tile index.</p></div>
+</div>
+
+<p/><hr/><p/>
+<div class="function">
+<p><font size="5" color="#818100"><b>Function: </b></font>map_set_data()</p>
+<div class="cproto">void map_set_data(map *map, short *data);</div>
+
+<div class="text">
+<p>Sets the map data for the given map. <span class="label">w</span> and
+<span class="label">h</span> are the dimensions of the map. The map
+data is of 16-bit words, each word containing the index of the
+tile to display.</p></div>
+</div>
+
+<p/><hr/><p/>
+<div class="function">
+<p><font size="5" color="#818100"><b>Function: </b></font>map_set_single()</p>
+<div class="cproto">void map_set_single(map *map, int x, int y, short data);</div>
+
+<div class="text">
+<p>Sets a single element in the map data. <span class="label">x</span>
+and <span class="label">y</span> are the tile coordinates to be set.
+The tile is a 16-bit word containing the index of the tile.</p></div>
+</div>
+
+<p/><hr/><p/>
+<div class="function">
+<p><font size="5" color="#818100"><b>Function: </b></font>map_animate_tiles()</p>
+<div class="cproto">void map_animate_tiles(map *map);</div>
+
+<div class="text">
+<p>Animate all tiles on the given map.</p></div>
+</div>
+
+<p/><hr/><p/>
+<div class="function">
+<p><font size="5" color="#818100"><b>Function: </b></font>map_reset_tiles()</p>
+<div class="cproto">void map_reset_tiles(map *map);</div>
+
+<div class="text">
+<p>Reset all tile animation on the given map.</p></div>
+</div>
+</div>
+
+<p/><hr/><p/>
+<div class="section">
+<div class="secttitle">
+<p>Tiles</p>
+</div>
+
+<div class="text">
+<p>These routines allow you to create the tiles (and set the
+properties of same) that you can then load into your maps.</p></div>
+
+<p/><hr/><p/>
+<div class="function">
+<p><font size="5" color="#818100"><b>Function: </b></font>tile_create()</p>
+<div class="cproto">tile *tile_create();</div>
+
+<div class="text">
+<p>Creates a new tile.</p></div>
+</div>
+
+<p/><hr/><p/>
+<div class="function">
+<p><font size="5" color="#818100"><b>Function: </b></font>tile_delete()</p>
+<div class="cproto">void tile_delete(tile *tile);</div>
+
+<div class="text">
+<p>Deletes a tile and frees all of its image data.</p></div>
+</div>
+
+<p/><hr/><p/>
+<div class="function">
+<p><font size="5" color="#818100"><b>Function: </b></font>tile_get_collides()</p>
+<div class="cproto">int tile_get_collides(tile *tile, int *mode);</div>
+
+<div class="text">
+<p>Retrieves the collision mode for the specified tile. Returns 0
+on success, or ERR if the tile does not exist.</p></div>
+</div>
+
+<p/><hr/><p/>
+<div class="function">
+<p><font size="5" color="#818100"><b>Function: </b></font>tile_set_collides()</p>
+<div class="cproto">void tile_set_collides(tile *tile, int mode);</div>
+
+<div class="text">
+<p>Sets the collision mode for the specified tile. The
+<span class="label">mode</span> must be one of: COLLISION_OFF (sprite
+does not collide), COLLISION_BOX (collision testing by bounding
+box), or COLLISION_PIXEL (collision testing by pixel-mask).</p></div>
+</div>
+
+<p/><hr/><p/>
+<div class="function">
+<p><font size="5" color="#818100"><b>Function: </b></font>tile_get_anim_type()</p>
+<div class="cproto">int tile_get_anim_type(tile *tile, int *type);</div>
+
+<div class="text">
+<p>Retrieves the animation type for the specified tile. Returns 0
+on success, or ERR if the tile does not exist.</p></div>
+</div>
+
+<p/><hr/><p/>
+<div class="function">
+<p><font size="5" color="#818100"><b>Function: </b></font>tile_set_anim_type()</p>
+<div class="cproto">void tile_set_anim_type(tile *tile, int type);</div>
+
+<div class="text">
+<p>Sets the animation type for the specified tile. Valid animation
+types are: ANIMATE_OFF (do not animate), ANIMATE_FWD (forward
+looping animation), ANIMATE_REV (reverse looping animation), and
+ANIMATE_PP (ping-pong animation).</p></div>
+</div>
+
+<p/><hr/><p/>
+<div class="function">
+<p><font size="5" color="#818100"><b>Function: </b></font>tile_add_frame()</p>
+<div class="cproto">int tile_add_frame(tile *tile, frame *frame);</div>
+
+<div class="text">
+<p>Adds the given frame to the tile. Please note that this does not
+make a copy of the frame, so you will likely want to make a copy
+of the frame before passing it to this routine (e.g. if you use
+that particular frame anywhere else).</p></div>
+</div>
+
+<p/><hr/><p/>
+<div class="function">
+<p><font size="5" color="#818100"><b>Function: </b></font>tile_add_frame_data()</p>
+<div class="cproto">int tile_add_frame_data(tile *tile, int mode, int width,
+    int height, void *data, void *aux);</div>
+
+<div class="text">
+<p>Loads the given graphics data into the tile. The documentation
+for <span class="label">frame_create()</span> has a detailed
+description of the arguments, as this is essentially a wrapper
+for that routine.</p></div>
+</div>
+
+<p/><hr/><p/>
+<div class="function">
+<p><font size="5" color="#818100"><b>Function: </b></font>tile_set_pixel_mask()</p>
+<div class="cproto">void tile_set_pixel_mask(tile *tile, int index,
+    unsigned char *data);</div>
+
+<div class="text">
+<p>Sets a pixel-accurate collision mask for the specified frame of
+the tile. Any non-zero value in the <span class="label">data</span>
+buffer counts as an active pixel.</p></div>
+</div>
+
+<p/><hr/><p/>
+<div class="function">
+<p><font size="5" color="#818100"><b>Function: </b></font>tile_set_pixel_mask_from()</p>
+<div class="cproto">void tile_set_pixel_mask_from(tile *tile, int index, frame *source);</div>
+
+<div class="text">
+<p>Sets a pixel-accurate collision mask for the specified frame of
+the tile from a source frame. If the source frame has a color
+key set, then the opaque pixels represent the collidable
+portions of the pixel mask. If the source frame does not have a
+color key, then each pixel is desaturated and any pixel lighter
+than neutral gray (r, g, b = 128) counts as an active pixel.</p></div>
+</div>
+
+<p/><hr/><p/>
+<div class="function">
+<p><font size="5" color="#818100"><b>Function: </b></font>tile_animate()</p>
+<div class="cproto">void tile_animate(tile *tile);</div>
+
+<div class="text">
+<p>Animates the specified tile.</p></div>
+</div>
+
+<p/><hr/><p/>
+<div class="function">
+<p><font size="5" color="#818100"><b>Function: </b></font>tile_reset()</p>
+<div class="cproto">void tile_reset(tile *tile);</div>
+
+<div class="text">
+<p>Resets the tile animation for the specified tile.</p></div>
+</div>
+</div>
+
+<p/><hr/><p/>
+<div class="section">
+<div class="secttitle">
+<p>Sprites</p>
+</div>
+
+<div class="text">
+<p>Sprites are movable graphical elements that comprise the basic
+building blocks of most games you'll make with the Brick Engine.
+They're similar to the idea of hardware sprites that you'll find
+in consoles and old computers, but with some very useful
+improvements.</p></div>
+
+<div class="text">
+<p>Each sprite can have an unlimited number of graphics frames
+added to it for animation, and each frame can have subframes
+that are rendered in series to aid in composition of sprites and
+effects. The effects are the other unique thing about Brick
+Engine sprites. A given sprite frame (or subframe) isn't just a
+block of RGB data, but can be one of a variety of color-
+manipulation effects, such as brightness or
+saturation/desaturation effects, or pixel-manipulation effects,
+such as user-defined convolution kernels. These effects allow
+for a wide variety of engaging visuals, like shadows, real-time
+reflective mirrors, rippling water effects, heat-blurring of
+rocket jets, and so on.</p></div>
+
+<div class="text">
+<p>Sprites can also have two kinds of collision-detection enabled,
+bounding box collision detection (very fast) and pixel-accurate
+collision detection (not as fast, but as accurate as you
+specify).</p></div>
+
+<div class="text">
+<p>Brick Engine sprites offer two more seldom-used features that
+come in handy for specific situations, z-hinting and motion
+control programs. Z-hinting allows sprites to be drawn in a
+certain order, e.g. if a sprite passes alternately in front of
+and behind a level object. Z-hinting must enabled at for a given
+layer, and the z-hint values are otherwise ignored. Motion
+control programs are little scripts attached to sprites that
+allow for some autonomous behavior, and have their own section
+in this document, which you ought to consult to learn more.</p></div>
+
+<p/><hr/><p/>
+<div class="function">
+<p><font size="5" color="#818100"><b>Function: </b></font>sprite_create()</p>
+<div class="cproto">sprite *sprite_create();</div>
+
+<div class="text">
+<p>Creates a new sprite.</p></div>
+</div>
+
+<p/><hr/><p/>
+<div class="function">
+<p><font size="5" color="#818100"><b>Function: </b></font>sprite_copy()</p>
+<div class="cproto">sprite *sprite_copy(sprite *sprite);</div>
+
+<div class="text">
+<p>Makes a copy of the given sprite.</p></div>
+</div>
+
+<p/><hr/><p/>
+<div class="function">
+<p><font size="5" color="#818100"><b>Function: </b></font>sprite_delete()</p>
+<div class="cproto">void sprite_delete(sprite *sprite);</div>
+
+<div class="text">
+<p>Deletes the given sprite and frees all of the frame data.</p></div>
+</div>
+
+<p/><hr/><p/>
+<div class="function">
+<p><font size="5" color="#818100"><b>Function: </b></font>sprite_set_frame()</p>
+<div class="cproto">void sprite_set_frame(sprite *sprite, int frame);</div>
+
+<div class="text">
+<p>Selects a sprite frame for display.</p></div>
+</div>
+
+<p/><hr/><p/>
+<div class="function">
+<p><font size="5" color="#818100"><b>Function: </b></font>sprite_get_frame()</p>
+<div class="cproto">int sprite_get_frame(sprite *sprite, int *frame);</div>
+
+<div class="text">
+<p>Stores the frame that is currently selected in
+<span class="label">frame</span>. Returns 0 on success, or ERR if
+given an invalid sprite.</p></div>
+</div>
+
+<p/><hr/><p/>
+<div class="function">
+<p><font size="5" color="#818100"><b>Function: </b></font>sprite_set_z_hint()</p>
+<div class="cproto">void sprite_get_z_hint(sprite *sprite, int z_hint);</div>
+
+<div class="text">
+<p>Sets the sprite's z-hint. When layer sorting is enabled, then
+sprites are sorted by z-hint before being drawn. When layer
+sorting is not enabled, the sprite's z-hint has no effect.</p></div>
+</div>
+
+<p/><hr/><p/>
+<div class="function">
+<p><font size="5" color="#818100"><b>Function: </b></font>sprite_get_z_hint()</p>
+<div class="cproto">int sprite_get_z_hint(sprite *sprite, int *z_hint);</div>
+
+<div class="text">
+<p>Stores the sprite's z-hint into <span class="label">z_hint</span>.
+Returns 0 on success, or ERR if given an invalid sprite.</p></div>
+</div>
+
+<p/><hr/><p/>
+<div class="function">
+<p><font size="5" color="#818100"><b>Function: </b></font>sprite_set_collides()</p>
+<div class="cproto">void sprite_set_collides(sprite *sprite, int mode);</div>
+
+<div class="text">
+<p>Sets the sprite's collision mode. The <span class="label">mode</span>
+must be one of: COLLISION_OFF (sprite does not collide),
+COLLISION_BOX (collision testing by bounding box), or
+COLLISION_PIXEL (collision testing by pixel-accurate mask).</p></div>
+</div>
+
+<p/><hr/><p/>
+<div class="function">
+<p><font size="5" color="#818100"><b>Function: </b></font>sprite_get_collides()</p>
+<div class="cproto">int sprite_get_collides(sprite *sprite, int *mode);</div>
+
+<div class="text">
+<p>Stores the sprite's collision mode into
+<span class="label">mode</span>. Returns 0 on success, or ERR if given
+an invalid sprite.</p></div>
+</div>
+
+<p/><hr/><p/>
+<div class="function">
+<p><font size="5" color="#818100"><b>Function: </b></font>sprite_set_bounding_box()</p>
+<div class="cproto">void sprite_set_bounding_box(sprite *sprite, int frame, box *box);</div>
+
+<div class="text">
+<p>Sets the bounding box for the specified frame of the sprite.</p></div>
+</div>
+
+<p/><hr/><p/>
+<div class="function">
+<p><font size="5" color="#818100"><b>Function: </b></font>sprite_set_pixel_mask()</p>
+<div class="cproto">void sprite_set_pixel_mask(sprite *sprite, int frame, unsigned char *data);</div>
+
+<div class="text">
+<p>Sets the pixel-accurate collision mask for the specified frame
+of the sprite. Any non-zero value in the
+<span class="label">data</span> buffer counts as an active pixel.</p></div>
+</div>
+
+<p/><hr/><p/>
+<div class="function">
+<p><font size="5" color="#818100"><b>Function: </b></font>sprite_set_pixel_mask_from()</p>
+<div class="cproto">void sprite_set_pixel_mask_from(sprite *sprite, int frame, frame *source);</div>
+
+<div class="text">
+<p>Sets the pixel-accurate collision mask for the specified frame
+of the sprite from a source frame. If the source frame has a
+color key set, then the opaque pixels in the frame represent the
+collidable portions of the pixel mask. If the source frame does
+not have a color key, then the source frame is desaturated and
+any pixel lighter than neutral gray (r, g, b = 128) counts as an
+active, collidable pixel.</p></div>
+</div>
+
+<p/><hr/><p/>
+<div class="function">
+<p><font size="5" color="#818100"><b>Function: </b></font>sprite_set_position()</p>
+<div class="cproto">void sprite_set_position(sprite *sprite, int x, int y);</div>
+
+<div class="text">
+<p>Sets the position of the sprite.</p></div>
+</div>
+
+<p/><hr/><p/>
+<div class="function">
+<p><font size="5" color="#818100"><b>Function: </b></font>sprite_get_position()</p>
+<div class="cproto">int sprite_get_position(sprite *sprite, int *x, int *y);</div>
+
+<div class="text">
+<p>Stores the position of the sprite into <span class="label">x</span>
+and <span class="label">y</span>. Returns 0 on success, or ERR if
+given an invalid sprite.</p></div>
+</div>
+
+<p/><hr/><p/>
+<div class="function">
+<p><font size="5" color="#818100"><b>Function: </b></font>sprite_set_velocity()</p>
+<div class="cproto">void sprite_set_velocity(sprite *sprite, int x, int y);</div>
+
+<div class="text">
+<p>Sets the velocity of the sprite. Note that this doesn't actually
+move the sprite or cause the sprite to be moved. This is only
+used in setting up your proposed sprite motions for collision
+detection, e.g. so that you can test how far your sprite may
+move before it hits a wall or another sprite.</p></div>
+</div>
+
+<p/><hr/><p/>
+<div class="function">
+<p><font size="5" color="#818100"><b>Function: </b></font>sprite_get_velocity()</p>
+<div class="cproto">int sprite_get_velocity(sprite *sprite, int *x, int *y);</div>
+
+<div class="text">
+<p>Stores the velocity of the sprite into <span class="label">x</span>
+and <span class="label">y</span>. Returns 0 on success, or ERR if
+given an invalid sprite.</p></div>
+</div>
+
+<p/><hr/><p/>
+<div class="function">
+<p><font size="5" color="#818100"><b>Function: </b></font>sprite_add_frame()</p>
+<div class="cproto">int sprite_add_frame(sprite *sprite, frame *frame);</div>
+
+<div class="text">
+<p>Adds the given frame to the sprite. Please note that this does
+not make a copy of the frame, so be aware that you will probably
+want to make a copy of your graphics frame before passing it to
+this routine.</p></div>
+</div>
+
+<p/><hr/><p/>
+<div class="function">
+<p><font size="5" color="#818100"><b>Function: </b></font>sprite_add_frame_data()</p>
+<div class="cproto">int sprite_add_frame_data(sprite *sprite, int mode, int w, int h,
+    void *data, void *auxiliary);</div>
+
+<div class="text">
+<p>Loads a graphics frame into the given sprite. The documentation
+for <span class="label">frame_create()</span> has a detailed
+description of the arguments. This is essentially a wrapper for
+that routine.</p></div>
+</div>
+
+<p/><hr/><p/>
+<div class="function">
+<p><font size="5" color="#818100"><b>Function: </b></font>sprite_add_subframe()</p>
+<div class="cproto">int sprite_add_subframe(sprite *sprite, int index, frame *frame);</div>
+
+<div class="text">
+<p>Adds the frame to the sprite as a subframe on the given frame
+index. Subframes are rendered in reverse order, i.e. the last-
+added subframe is rendered first. This allows for easy
+compositing of sprite frames together (e.g. a shadow, a lighting
+effect, etc) into a single sprite. Please note that this does
+not make a copy of the frame, however, so you'll probably want
+to make a copy of the frame before passing it into this routine.</p></div>
+</div>
+
+<p/><hr/><p/>
+<div class="function">
+<p><font size="5" color="#818100"><b>Function: </b></font>sprite_load_program()</p>
+<div class="cproto">int sprite_load_program(sprite *sprite, char *program);</div>
+
+<div class="text">
+<p>This routine loads the given motion control program into the
+sprite. Please see the section on Motion Control Programs for a
+detailed description of how to write these programs.</p></div>
+</div>
+</div>
+
+<p/><hr/><p/>
+<div class="section">
+<div class="secttitle">
+<p>Strings</p>
+</div>
+
+<div class="text">
+<p>Strings are what you'll use to display blocks of text onscreen,
+such as in character dialogue or as part of a heads-up display.
+These are the routines used to create and manipulate strings.
+After creating and configuring your text strings, you'll need to
+add them to a layer's string list in order for them to be
+displayed. <span class="note">Note that strings are positioned
+absolutely on the display canvas and do not move when the layer
+camera moves.</span></p></div>
+
+<p/><hr/><p/>
+<div class="function">
+<p><font size="5" color="#818100"><b>Function: </b></font>string_create()</p>
+<div class="cproto">string *string_create();</div>
+
+<div class="text">
+<p>Creates a new string.</p></div>
+</div>
+
+<p/><hr/><p/>
+<div class="function">
+<p><font size="5" color="#818100"><b>Function: </b></font>string_delete()</p>
+<div class="cproto">void string_delete(string *string);</div>
+
+<div class="text">
+<p>Deletes the given string.</p></div>
+</div>
+
+<p/><hr/><p/>
+<div class="function">
+<p><font size="5" color="#818100"><b>Function: </b></font>string_set_font()</p>
+<div class="cproto">void string_set_font(string *string, char *font);</div>
+
+<div class="text">
+<p>Sets the font for the given string. If an unknown font name is
+assigned to a string, the string will not be displayed.</p></div>
+</div>
+
+<p/><hr/><p/>
+<div class="function">
+<p><font size="5" color="#818100"><b>Function: </b></font>string_set_position()</p>
+<div class="cproto">void string_set_position(string *string, int x, int y);</div>
+
+<div class="text">
+<p>Sets the position for the given string.</p></div>
+</div>
+
+<p/><hr/><p/>
+<div class="function">
+<p><font size="5" color="#818100"><b>Function: </b></font>string_set_text()</p>
+<div class="cproto">void string_set_text(string *string, char *text);</div>
+
+<div class="text">
+<p>Sets the text contents of the given string.</p></div>
+</div>
+</div>
+</div>
+
+<p/><hr/><p/>
+<div class="section">
+<div class="secttitle">
+<p>The Motion Control Program System</p>
+</div>
+
+<p/><hr/><p/>
+<div class="section">
+<div class="secttitle">
+<p>The Language</p>
+</div>
+
+<div class="text">
+<p>Motion control programs are very short programs, written in a
+custom language, that give sprites some simple autonomy, i.e.
+without having to run callbacks in the main game loop. They're
+especially useful when the programmer is using a scripting
+language but still desires to animate great numbers of sprites.,
+because they can eliminate the need to fire potentially-heavy
+script callbacks for sprite motion.</p></div>
+
+<div class="text">
+<p>
+Motion control programs can also be used to generate simple
+particle systems, environmental effects, and the like. Note that
+motion control programs aren't intended to be a generic
+replacement for sprite movement. For more detailed information,
+please see the in-depth guide at the [[motion control programs]]
+page.</p></div>
+
+<div class="text">
+<p>The language consists of the following instructions.
+Instructions and their arguments appear one per line. Whitespace
+and empty lines are ignored.</p></div>
+
+<div class="cproto">
+set var, var/immediate  - store the right-side value in the left-side
+                          named var
+add var, var/immediate  - add the right-side value to the left-side
+                          named var
+stc var, var/immediate  - stochastic alter the left-side var with a
+                          range of -(var/imm)..var/imm
+trk var, id             - copy over the left-side named var contents
+                          from another sprite
+avg var, id             - average the left-side named var contents with
+                          those of another sprite
+beq var, var/immediate  - break (immediately exit the program) if equal
+bne var, var/immediate  - break if not equal
+blt var, var/immediate  - break if less than
+bgt var, var/immediate  - break if greater than
+bmp id                  - break if there is a collision with the given
+                          map
+bnm id                  - break if there is a not a collision with the
+                          given map
+bst var/immediate       - stochastic break, i.e. exit if random value
+                          between zero and imm is zero
+copy id                 - make a copy of the sprite and replace the
+                          current sprite with the copy for the remain-
+                          der of the program
+ladd id                 - add the sprite to the given list
+lrem id                 - remove the sprite from the given list
+del                     - delete the sprite
+xchgp ptr               - exchange the sprite's motion control program
+                          with another sprite's program
+sound id                - play the sound
+eoc                     - end of code</div>
+
+<div class="text">
+<p>The <span class="label">var</span> is a named variable, one of the
+following: <span class="label">xpos</span>, <span class="label">ypos</span>,
+<span class="label">xvel</span>, <span class="label">yvel</span>,
+<span class="label">frame</span>, <span class="label">tick</span>.
+<span class="label">xpos</span> and <span class="label">ypos</span> refer to
+the sprite's position, and <span class="label">xvel</span> and
+<span class="label">yvel</span> refer to the sprite's velocity.
+Immediate values are integers, and <span class="label">id</span>
+values specify a list, sprite, map, or sound. Argument order
+matches Intel-style assembly language syntax, i.e. instructions
+that set or change a variable have the destination given first
+(<span class="note">set xpos, 4</span> can be read as
+<span class="note">xpos = 4</span>)</p></div>
+
+<div class="text">
+<p>
+Every sprite also has its own internal tick counter, and this
+increments every time the sprite's motion-control program is
+run.</p></div>
+</div>
+
+<p/><hr/><p/>
+<div class="section">
+<div class="secttitle">
+<p>Running motion control programs</p>
+</div>
+
+<div class="text">
+<p>These routines execute the motion control programs for a sprite
+or for a list of sprites.</p></div>
+
+<p/><hr/><p/>
+<div class="function">
+<p><font size="5" color="#818100"><b>Function: </b></font>motion_exec_single()</p>
+<div class="cproto">int motion_exec_single(sprite *sprite);</div>
+
+<div class="text">
+<p>Executes the motion control program for the given sprite.
+Returns 0 on success, or an error code on failure.</p></div>
+</div>
+
+<p/><hr/><p/>
+<div class="function">
+<p><font size="5" color="#818100"><b>Function: </b></font>motion_exec_list()</p>
+<div class="cproto">int motion_exec_list(list *list);</div>
+
+<div class="text">
+<p>Executes the motion control program for every sprite in the
+given list. Returns 0 on success, or an error code if any motion
+control program fails to execute.</p></div>
+</div>
+</div>
+</div>
+
+<p/><hr/><p/>
+<div class="section">
+<div class="secttitle">
+<p>Introspection and Collision Detection</p>
+</div>
+
+<p/><hr/><p/>
+<div class="section">
+<div class="secttitle">
+<p>Inspection</p>
+</div>
+
+<div class="text">
+<p>It's often the case that you'll need to have a sprite query its
+surroundings or check to see if anything else is nearby. If you
+wanted to have a sprite avoid a patch of water, for example, you
+could use the introspection routines to read the nearby tiles
+and have the sprite govern itself accordingly. These
+introspection routines allow you to do that, along with a few
+other methods of examining the environment.</p></div>
+
+<p/><hr/><p/>
+<div class="function">
+<p><font size="5" color="#818100"><b>Function: </b></font>inspect_adjacent_tiles()</p>
+<div class="cproto">void inspect_adjacent_tiles(map *map, sprite *spr, int dir,
+    map_fragment *res);</div>
+
+<div class="text">
+<p>Returns a buffer of tiles adjacent to the sprite on the
+specified map. The direction must be one of
+<span class="label">INSPECT_NW</span>, <span class="label">INSPECT_N</span>,
+<span class="label">INSPECT_NE</span>, <span class="label">INSPECT_E</span>,
+<span class="label">INSPECT_SE</span>, <span class="label">INSPECT_S</span>,
+<span class="label">INSPECT_SW</span>, <span class="label">INSPECT_W</span>.
+If the sprite is using bounding box collision, the buffer of
+tiles is determined by the edge of the bounding box. If pixel-
+accurate collision is enabled, the bounding edges of the pixel
+mask are used.</p></div>
+</div>
+
+<p/><hr/><p/>
+<div class="function">
+<p><font size="5" color="#818100"><b>Function: </b></font>inspect_obscured_tiles()</p>
+<div class="cproto">void inspect_obscured_tiles(map *map, sprite *spr, map_fragment *res);</div>
+
+<div class="text">
+<p>Returns a buffer of tiles obscured by the sprite on the
+specified map. If the sprite is using bounding box collision,
+the tiles are determined by the edge of the bounding box. If
+pixel-accurate collision is enabled, the bounding edges of the
+pixel mask are used.</p></div>
+</div>
+
+<p/><hr/><p/>
+<div class="function">
+<p><font size="5" color="#818100"><b>Function: </b></font>inspect_line_of_sight()</p>
+<div class="cproto">int inspect_line_of_sight(map *map, sprite *spr, int xofs, int yofs,
+    int dist, sprite *target);</div>
+
+<div class="text">
+<p>Performs a line-of-sight test to determine visibility from the
+originating sprite to the target sprite within the given map.
+The <span class="label">xofs</span> and <span class="label">yofs</span>
+offsets determine the point, relative to the sprite's upper left
+corner, from which the visibility test is performed. These
+offsets can be negative, performing the visibility test from a
+point outside the originating sprite's frame. The
+<span class="label">dist</span> value is the maximum range for the
+test.</p></div>
+
+<div class="text">
+<p>The originating sprite does not need to have collision detection
+enabled, but the target sprite must have collision detection
+enabled. If the target sprite has bounding-box collision
+enabled, the four corners of the bounding box are checked for
+visibility from the originating sprite. If the target sprite has
+pixel-accurate collision enabled, the visibility test is
+performed on the four corners of the pixel mask's bounding
+edges.</p></div>
+</div>
+
+<p/><hr/><p/>
+<div class="function">
+<p><font size="5" color="#818100"><b>Function: </b></font>inspect_in_frame()</p>
+<div class="cproto">list *inspect_in_frame(list *list, box *range);</div>
+
+<div class="text">
+<p>Returns a list of sprites that fall within the given rectangle.</p></div>
+</div>
+
+<p/><hr/><p/>
+<div class="function">
+<p><font size="5" color="#818100"><b>Function: </b></font>inspect_near_point()</p>
+<div class="cproto">sprite *inspect_near_point(list *list, int x, int y, int distance);</div>
+
+<div class="text">
+<p>Returns a list of sprites near the given point.</p></div>
+</div>
+</div>
+
+<p/><hr/><p/>
+<div class="section">
+<div class="secttitle">
+<p>Collisions</p>
+</div>
+
+<div class="text">
+<p>These routines detect collisions among sprites, and between
+sprites and maps.</p></div>
+
+<p/><hr/><p/>
+<div class="function">
+<p><font size="5" color="#818100"><b>Function: </b></font>collision_with_map()</p>
+<div class="cproto">void collision_with_map(sprite *sprite, map *map, int slip,
+    map_collision *res);</div>
+
+<div class="text">
+<p>Checks the given sprite for collision against the given map. The
+optional slip argument indicates that, when a collision occurs,
+the sprite will be adjusted by the given number of one-pixel
+increments to continue motion. <span class="note">Note: The slip
+factor allows sprites to travel near the corners of maps without
+stopping on all single-pixel collisions.</span></p></div>
+
+<div class="text">
+<p>The result is stored <span class="label">res</span>.
+The <span class="label">res.mode</span> value will be
+<span class="label">COLLISION_ATSTART</span> to indicate that the sprite
+and map were colliding before motion began,
+<span class="label">COLLISION_NEVER</span> to indicate that
+no collision has occurred, or
+<span class="label">COLLISION_INMOTION</span> to indicate that
+collision occurred during motion. The pixel distance before
+the sprite hits the map is stored in
+<span class="label">res.stop</span> and the distance that the sprite
+may travel after being adjusted by the given
+<span class="label">slip</span> value is stored in
+<span class="label">res.go</span>.</p></div>
+</div>
+
+<p/><hr/><p/>
+<div class="function">
+<p><font size="5" color="#818100"><b>Function: </b></font>collision_with_sprites()</p>
+<div class="cproto">int collision_with_sprites(sprite *sprite, list *sprite_list,
+    int limit, sprite_collision res[]);</div>
+
+<div class="text">
+<p>Tests the given sprite for collisions with all collidable
+members of the given sprite list. Only
+<span class="label">limit</span> collisions will be returned, and
+<span class="label">res</span> must be large enough to hold this
+number of collisions. The <span class="label">res.mode</span> value
+will be <span class="label">COLLISION_ATSTART</span> to indicate that
+the sprite and map were colliding before motion began,
+<span class="label">COLLISION_NEVER</span> to indicate that no
+collision has occurred, or
+<span class="label">COLLISION_INMOTION</span> to indicate that
+collision occurred during motion. The pixel distance before the
+sprite hits the target is stored in
+<span class="label">res.dist</span> and the direction in which the
+collision occurred is stored in <span class="label">res.hit</span>.</p></div>
+</div>
+</div>
+</div>
+
+<p/><hr/><p/>
+<div class="section">
+<div class="secttitle">
+<p>Utilities</p>
+</div>
+
+<p/><hr/><p/>
+<div class="section">
+<div class="secttitle">
+<p>Timing</p>
+</div>
+
+<div class="text">
+<p>A routine useful for setting up a basic delay loop and holding a
+steady framerate.</p></div>
+
+<p/><hr/><p/>
+<div class="function">
+<p><font size="5" color="#818100"><b>Function: </b></font>delay()</p>
+<div class="cproto">int delay(int fps);</div>
+
+<div class="text">
+<p>If the time between calls to <span class="label">delay()</span> is
+less than necessary (i.e. the game would otherwise run too fast)
+to maintain the given <span class="label">fps</span> rate, then the
+routine will delay until enough time has passed. if the game is
+running too slowly to maintain the requested
+<span class="label">fps</span> rate, <span class="label">delay()</span> will
+return the number of frames that must be skipped to maintain
+speed.</p></div>
+</div>
+</div>
+
+<p/><hr/><p/>
+<div class="section">
+<div class="secttitle">
+<p>Scheduled events</p>
+</div>
+
+<div class="text">
+<p>The Brick Engine includes a simple event scheduler. Events are
+functions that take a single void * argument and return nothing.
+They run in their own thread, and can be schedule to run once,
+several times, or to be repeated indefinitely. They can also be
+paused, halted, or temporarily skipped.</p></div>
+
+<p/><hr/><p/>
+<div class="function">
+<p><font size="5" color="#818100"><b>Function: </b></font>event_add()</p>
+<div class="cproto">int event_add(int delay, int count, event ev, void *data);</div>
+
+<div class="text">
+<p>Schedules an event to run after <span class="label">delay</span>
+milliseconds. The <span class="label">count</span> determines how many
+times the event is run. If <span class="label">count</span> is
+negative, the event will repeat indefinitely.
+<span class="label">ev</span> is a pointer to the function to run.
+When <span class="label">ev</span> is called,
+<span class="label">data</span> is passed to it. The
+<span class="label">data</span> argument can, of course, be null. The
+event ID is returned, so that messages can be passed to the
+event, e.g. to pause or cancel its execution.</p></div>
+</div>
+
+<p/><hr/><p/>
+<div class="function">
+<p><font size="5" color="#818100"><b>Function: </b></font>event_message()</p>
+<div class="cproto">void event_message(int id, int msg);</div>
+
+<div class="text">
+<p>Sends a message to the given event. If the message is EVENT_GO,
+the event will run as normal. If the message is EVENT_STOP, the
+event will be cancelled. If the message is EVENT_PAUSE, event
+execution is paused until the event is resumed (with EVENT_GO)
+or halted (with EVENT_STOP). If the message is EVENT_SKIP1, the
+event will not execute the next time it's scheduled to, but will
+execute each subsequent time and its execution count will be
+decremented as though it ran (e.g. if it's scheduled to run 10
+times, then after being sent EVENT_SKIP1 once, it will run 9
+times total).</p></div>
+</div>
+</div>
+</div>
+</div>
+
+</body>
+</html>

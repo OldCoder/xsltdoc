@@ -1,0 +1,319 @@
+"xsltdoc" notes                                        Revised: 120707
+----------------------------------------------------------------------
+
+1. Overview.
+
+1.1. XSLT is both an  XML-based language  and  a way to transform XML-
+based data files into files of other types. It (XSLT) can be used, for
+example, to  convert  a book or article  that's stored in an XML-based
+document format to an HTML web page.
+
+Since XSLT programs  (also known as XSLT stylesheets)  can  generate a
+number of output formats, they may simplify the process of maintaining
+documentation for a project.  The basic idea is that a document can be
+written once, in an XML-based format,  and then transformed  to  other
+formats as necessary.
+
+This approach to documentation isn't unique to XSLT.  LaTeX, Restruct-
+ured Text, and other frameworks can be used for similar purposes.  But
+XML-based  formats are  quite common,  for documents  as well as  data
+files in general,  and  XSLT is  uniquely suited  for work on files of
+this type.
+
+Additionally,  the major  web  browsers support XSLT internally.  This
+means that, theoretically,  web pages can be written in XML plus XSLT,
+displayed directly by browsers, and converted to other formats through
+the use of alternate XSLT stylesheets.
+
+1.2. This project is  the start of an XSLT tutorial and  the core of a
+documentation toolset that may grow over time. It provides two related
+XSLT stylesheets that can be   used to transform XML documents written
+using  a  simple XML-based format into DokuWiki and HTML,  respective-
+ly:
+
+      xmldoc2dokuwiki.xsl - XSLT file that converts XML to DokuWiki
+
+      xmldoc2html.xsl     - XSLT file that converts XML to HTML
+
+1.3. "xsltdoc" was created by OldCoder:
+
+      Site:    http://oldcoder.org/
+      Mail:    oldcoder@yahoo.com
+      GitHub:  https://github.com/OldCoder/
+      Repo:    https://github.com/OldCoder/xsltdoc.git
+
+The license used for the current version is MIT/X.
+
+----------------------------------------------------------------------
+
+2. Screenshots.
+
+Two screenshots are included.  They're in the  "images" directory that
+comes with this README file:
+
+xsltdoc-screenshot-dokuwiki.png - This  image  shows  sample  DokuWiki
+output produced by this package as displayed by the Epiphany web brow-
+ser.
+
+xsltdoc-screenshot-html.png - This  image  shows sample HTML output as
+displayed by the same browser.
+
+The same XML input file was used in both cases.
+
+----------------------------------------------------------------------
+
+3. Development.
+
+3.1. Source code.
+
+Full source code  for the project is provided in the same directory as
+this README file. The code consists simply of the two XSLT stylesheets
+listed in part 1 above (Overview).
+
+3.2. Requirements.
+
+3.2.1. XSLT 1 processor.
+
+For basic operation, requirements are Linux, the two XSLT stylesheets,
+and a standard tool  named "xsltproc".  "xsltproc" is provided by most
+major Linux distros;  in some cases, it's preinstalled, and in others,
+it can be obtained from distro repositories.
+
+You  can  use Xalan instead of "xsltproc". Note that usage is slightly
+different for Xalan; for more information, see part 4 below (Usage).
+
+Note:  Presently,  the XSLT stylesheets  are written in XSLT 1;  i.e.,
+they don't rely  on  XSLT 2 features.  Therefore,  an XSLT 2 processor
+isn't needed.
+
+3.2.2. Miscellaneous tools.
+
+If you'd  like  to  produce PDF output,  a program named "wkhtmltopdf"
+should be installed.  For more information about  the program in ques-
+tion, visit:
+
+      http://code.google.com/p/wkhtmltopdf/
+
+To use the "Makefile" provided in the "examples" directory  (which re-
+builds some sample output) you'll need  "make" in addition  to  "xslt-
+proc" and possibly "wkhtmltopdf".
+
+3.2.3. Displaying the output.
+
+To display HTML output, you'll need a web browser that supports modern
+CSS standards.
+
+To view DokuWiki output, you'll need both a web browser and a DokuWiki
+server or website. The DokuWiki server or website will need to include
+the DokuWiki "xterm" plugin.
+
+The Linux programs "evince", "epdfview", and "xpdf" (among others) may
+be used to show PDF output.
+
+3.3. Installation.
+
+No "build" is needed.
+
+To install  the package,  simply copy the two ".xsl" files provided to
+wherever you'd like to store them.
+
+If you'd like to work with the examples provided,  store the directory
+tree that contains this README file somewhere  in its entirety.  Note:
+The directory structure must be preserved.
+
+----------------------------------------------------------------------
+
+4. Usage.
+
+4.1. Using "xmldoc2dokuwiki.xsl".
+
+"xmldoc2dokuwiki.xsl" is an XSLT stylesheet  that converts  XML-format
+documentation to DokuWiki format.
+
+To use this stylesheet under Linux,  execute an "xsltproc" CLI command
+of the form:
+
+      xsltproc xmldoc2dokuwiki.xsl input.xml > output.dokuwiki
+
+"input.xml"  should be  an XML file containing  documentation or text.
+The XML file should conform to the format described in Appendix A.
+
+Substitute an appropriate pathname for the ".xsl" file if necessary.
+
+4.2. Using "xmldoc2html.xsl".
+
+"xmldoc2html.xsl" is an XSLT stylesheet that converts XML-format docu-
+mentation to HTML format.  The HTML output  is styled by  embedded CSS
+code.
+
+To use this stylesheet under Linux,  execute an "xsltproc" CLI command
+of the form:
+
+      xsltproc xmldoc2html.xsl input.xml > output.html
+
+"input.xml"  should be  an XML file containing  documentation or text.
+The XML file should conform to the format described in Appendix A.
+
+Substitute an appropriate pathname for the ".xsl" file if necessary.
+
+4.3. Xalan.
+
+In most cases,  "Xalan"  should work as a  substitute for  "xsltproc".
+Note that the order of the arguments is reversed for "Xalan":
+
+Xalan DokuWiki example:
+
+      Xalan input.xml xmldoc2dokuwiki.xsl > output.dokuwiki
+
+Xalan HTML example:
+
+      Xalan input.xml xmldoc2html.xsl     > output.html
+
+4.4. Examples.
+
+This project  provides an "examples" directory that  includes a sample
+XML input file, sample output files  (in  DokuWiki, HTML, and PDF for-
+mat), and a "Makefile" that can rebuild the output files. For more in-
+formation,  go  to the "examples" directory and see the following file
+there:
+
+      README-EXAMPLES
+
+----------------------------------------------------------------------
+
+5. Technical notes.
+
+5.1. For more information on DokuWiki, visit:
+
+      http://en.wikipedia.org/wiki/Dokuwiki
+
+5.2. "xmldoc2dokuwiki.xsl" knows how to "escape" the most common Doku-
+Wiki markup sequences if they happen to occur inside input-text nodes.
+For example, 'C' declarations of the following form:
+
+      int **foo;
+
+will be replaced with:
+
+      int *////*foo;
+
+----------------------------------------------------------------------
+
+Appendix A. XML input format.
+
+A.1. XML core input elements.
+
+The following  XML input elements  should be  sufficient for many pur-
+poses:
+
+code        - Defines a block of code. Used as follows:
+
+              <code>lines of code</code>
+
+              For HTML, maps to a CSS-styled  "div" named "code".  For
+              DokuWiki, maps to ''lines of code''.
+
+function    - Defines a function block. Used as follows:
+
+              <function name="foo">
+                  related elements go here
+              </function>
+
+              For HTML,  maps to a  CSS-styled  "div" named "function"
+              that includes a  function-name line.  For DokuWiki, maps
+              to a "=== name ===" block.
+
+label       - Defines text that should be treated as a label;  i.e., a
+              name that should be emphasized. Used as follows:
+
+              <label name="x_counter" />
+
+              For HTML, maps to a CSS-styled "span" named "label". For
+              DokuWiki, maps to **name**.
+
+link        - Defines a hyperlink. Used as follows:
+
+              <link target="http://foo/" name="Short description" />
+
+              For HTML, maps to a standard  "<a>" element.  For  Doku-
+              Wiki, maps to a "[[target|name]]" construct.
+
+note        - Defines text that should be treated as a note (for exam-
+              ple, as an FYI or a warning). Used as follows:
+
+              <note>One or more lines of text</note>
+
+              For HTML, maps to a CSS-styled "span" named "note".  For
+              DokuWiki, maps to //text//.
+
+section     - Defines a section block. Used as follows:
+
+              <section title="Popular Recipes">
+                  <section title="Meat">
+                      ...
+                  </section>
+                  <section title="Vegetarian">
+                      ...
+                  </section>
+              </section>
+
+              For HTML,  maps to a  CSS-styled  "div" named  "section"
+              that includes a section-name line.
+
+              For DokuWiki,  maps to a  "=== foo ===" block  with  the
+              appropriate  number of "equals" signs determined automa-
+              tically.
+
+text        - Defines a block of text. Used as follows:
+
+              <text>One or more lines of text.</text>
+
+              For HTML, maps to a  CSS-styled "div" named "text".  For
+              DokuWiki, simply produces  a block  of text followed  by
+              two newlines.
+
+xterm       - Multi-purpose element. Used as follows:
+
+              <xterm>one or more lines of text</xterm>
+
+              For HTML,  maps  to a  CSS-styled  "div" named  "xterm".
+              For DokuWiki, maps to a DokuWiki "<xterm>" block.  Note:
+              This feature requires the "xterm" plugin for "DokuWiki".
+
+----------------------------------------------------------------------
+
+A.2. Additional XML input elements.
+
+The following XML input elements are also supported:
+
+cproto      - (Deprecated by "proto".) Defines a 'C' prototype defini-
+              tion block. Used as follows:
+
+              <cproto>lines of code</cproto>
+
+              For HTML,  maps  to a  CSS-styled  "div" named "cproto".
+              For DokuWiki, maps to:
+
+              <xterm>%%lines of code%%</xterm>
+              two newlines
+
+              Note: This feature requires the "xterm" plugin for "Dok-
+              uWiki".
+
+desc        - Presently, equivalent to "text".
+
+namedvar    - Presently, equivalent to "label".
+
+proto       - Defines  a  programming  language  prototype  definition
+              block. Used as follows:
+
+              <proto lang="c">lines of code</proto>
+
+              For HTML,  maps  to a  CSS-styled  "div" named  "proto".
+              For DokuWiki, maps to:
+
+              <xterm>%%lines of code%%</xterm>
+              two newlines
+
+              Note: This feature requires the "xterm" plugin for "Dok-
+              uWiki".
